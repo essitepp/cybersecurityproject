@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Note App</title>
+  </head>
+  <body>
+    <h1>Note App</h1>
+    <p>Logged in as {{ user }}</p>
+    <form action="accounts/logout/" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="Log out">
+    </form>
+
+    <h2>My notes</h2>
+    <form action="add/" method="POST">
+      {% csrf_token %}
+      <div>Add a new note:</div>
+      <div>title <input type="text" name="note_title"></div>
+      <div>content <input type="text" name="note_text"></div>
+      <input type="submit" value="Add">
+    </form>
+
+    
+    {% if notes %}
+    <ul>
+      {% for note in notes %}
+      <li>
+        <form action="delete/{{ note.id }}/" method="POST">
+          <b>{{ note.note_title|safe }}:</b> {{ note.note_text|safe }}
+          <input type="submit" value="Delete">
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No notes added yet</p>
+    {% endif %}
+
+    <!-- fixed version of note list -->
+    <!-- {% if notes %}
+    <ul>
+      {% for note in notes %}
+      <li>
+        <form action="delete/{{ note.id }}/" method="POST">
+          {% csrf_token %}
+          <b>{{ note.note_title }}:</b> {{ note.note_text }}
+          <input type="submit" value="Delete">
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No notes added yet</p>
+    {% endif %} -->
+    
+  </body>
+</html>
